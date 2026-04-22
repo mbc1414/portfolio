@@ -1,0 +1,55 @@
+/* Background */
+body {
+  background-color: #f4f0e6;
+  font-family: Arial, sans-serif;
+  color: #333;
+  margin: 0;
+}
+
+/* Navigation */
+.nav {
+  background-color: #002e5d;
+  padding: 10px;
+  text-align: center;
+}
+
+.nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  background-color: #004080;
+  color: white;
+  padding: 30px;
+}
+
+/* Sections */
+.section {
+  padding: 20px;
+  margin: 20px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+/* Image styling */
+.image {
+  width: 75%;
+  max-width: 300px;
+  display: block;
+  margin-top: 15px;
+}
+
+/* Video container */
+.video-container {
+  text-align: left;
+}
+
+/* Tableau container */
+.tableauPlaceholder {
+  margin-top: 20px;
+  text-align: center;
+}

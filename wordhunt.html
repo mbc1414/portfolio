@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Word Hunt</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+    text-align: center;
+    padding: 20px;
+  }
+
+  h1 {
+    color: #1e3a5f;
+  }
+
+  .game-box {
+    background: white;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  input, button {
+    padding: 10px;
+    margin: 10px;
+    font-size: 16px;
+  }
+
+  button {
+    background-color: #1e3a5f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #16324a;
+  }
+
+  .log {
+    text-align: left;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 15px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+  }
+</style>
+
+</head>
+<body>
+
+<h1>Word Hunt</h1>
+
+<div class="nav">
+  <a href="scratch.html">Scratch Page</a>
+</div>
+
+<p>
+Pick a 4-letter word (not a name or plural). The computer will also choose one.
+Take turns guessing each other's word. After each guess:
+<br><br>
+- Say how many letters are correct  
+<br>
+- Say how many are in the correct position  
+<br><br>
+First to guess correctly wins!
+</p>
+
+<div class="game-box">
+
+  <h3>Step 1: Enter Your Secret Word</h3>
+  <input id="userWord" maxlength="4" placeholder="4-letter word">
+  <button onclick="startGame()">Start Game</button>
+
+  <div id="gameArea" style="display:none;">
+
+    <h3>Your Guess</h3>
+    <input id="userGuess" maxlength="4" placeholder="Enter guess">
+    <button onclick="submitUserGuess()">Guess</button>
+
+    <h3>Computer Guess</h3>
+    <p id="compGuessDisplay"></p>
+
+    <p>Tell the computer:</p>
+    <input id="correctLetters" type="number" placeholder="Correct letters">
+    <input id="correctPlace" type="number" placeholder="Correct position">
+    <button onclick="submitFeedback()">Submit Feedback</button>
+
+    <div class="log" id="log"></div>
+
+  </div>
+
+</div>
+
+<script>
+
+// simple word list
+const words = ["game","play","word","hunt","code","blue","tree","rock","fire","wind","star"];
+
+let userWord = "";
+let compWord = "";
+let currentCompGuess = "";
+
+// start game
+function startGame() {
+  userWord = document.getElementById("userWord").value.toLowerCase();
+
+  if (userWord.length !== 4) {
+    alert("Please enter a 4-letter word.");
+    return;
+  }
+
+  compWord = words[Math.floor(Math.random() * words.length)];
+
+  document.getElementById("gameArea").style.display = "block";
+  log("Game started!");
+  compTurn();
+}
+
+// user guess
+function submitUserGuess() {
+  const guess = document.getElementById("userGuess").value.toLowerCase();
+
+  if (guess.length !== 4) {
+    alert("Enter a 4-letter guess.");
+    return;
+  }
+
+  const result = evaluateGuess(guess, compWord);
+
+  log(`You guessed "${guess}" → ${result.correct} correct, ${result.position} in correct place`);
+
+  if (result.position === 4) {
+    log("🎉 You win!");
+    return;
+  }
+
+  compTurn();
+}
+
+// computer turn
+function compTurn() {
+  currentCompGuess = words[Math.floor(Math.random() * words.length)];
+  document.getElementById("compGuessDisplay").innerText = currentCompGuess;
+}
+
+// user gives feedback
+function submitFeedback() {
+  const correct = document.getElementById("correctLetters").value;
+  const position = document.getElementById("correctPlace").value;
+
+  log(`Computer guessed "${currentCompGuess}" → ${correct} correct, ${position} in correct place`);
+
+  if (parseInt(position) === 4) {
+    log("💻 Computer wins!");
+  }
+}
+
+// evaluate guess
+function evaluateGuess(guess, target) {
+  let correct = 0;
+  let position = 0;
+
+  for (let i = 0; i < 4; i++) {
+    if (guess[i] === target[i]) {
+      position++;
+    }
+    if (target.includes(guess[i])) {
+      correct++;
+    }
+  }
+
+  return { correct, position };
+}
+
+// log messages
+function log(message) {
+  const logDiv = document.getElementById("log");
+  logDiv.innerHTML += `<p>${message}</p>`;
+  logDiv.scrollTop = logDiv.scrollHeight;
+}
+
+</script>
+
+</body>
+</html>
